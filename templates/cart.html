@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroMeow - Кошик</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    .navbar {
+      background-color: #007bff;
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #ffeb3b;
+    }
+
+    .cart-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .cart-info {
+      flex: 1;
+      padding: 0 20px;
+    }
+
+    .cart-info h3 {
+      margin: 0 0 5px 0;
+      color: #333;
+    }
+
+    .cart-info p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .cart-actions button {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cart-actions button:hover {
+      background-color: #c82333;
+    }
+
+    .checkout {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .checkout h2 {
+      text-align: right;
+      color: #333;
+    }
+
+    .checkout button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .checkout button:hover {
+      background-color: #218838;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 40px 0;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Головна</a>
+  <a href="{{ url_for('profile') }}">Профіль</a>
+  <a href="{{ url_for('cart') }}">Кошик</a>
+  <a href="{{ url_for('contacts') }}">Контакти</a>
+</div>
+
+<div class="cart-container">
+  <h1>Ваш Кошик</h1>
+  
+  {% if cart_items %}
+    {% for item in cart_items %}
+      <div class="cart-item">
+        <img src="{{ item['image_url'] }}" alt="{{ item['name'] }}">
+        <div class="cart-info">
+          <h3>{{ item['name'] }}</h3>
+          <p>Ціна: {{ item['price'] }} грн</p>
+          <p>Кількість: {{ item['quantity'] }}</p>
+          <p>Вартість: {{ item['total_price'] - 80 }} грн + 80 грн (доставка)</p>
+        </div>
+        <div class="cart-actions">
+          <a href="{{ url_for('remove_from_cart', order_id=item['order_id']) }}">
+            <button>Видалити</button>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+    
+    <div class="checkout">
+      <h2>Загальна сума: {{ total }} грн (включаючи доставку)</h2>
+      <form method="POST" action="{{ url_for('cart') }}">
+        <button type="submit">Оформити замовлення</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="empty-cart">
+      <h3>Ваш кошик порожній</h3>
+      <p>Поверніться до <a href="{{ url_for('index') }}">каталогу</a>, щоб додати товари</p>
+    </div>
+  {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroMeow - Профіль</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+  }
+
+  .navbar {
+    background-color: #007bff;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+  }
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+
+  .navbar a:hover {
+    color: #ffeb3b;
+  }
+
+  .profile-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .profile-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  .profile-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+  }
+
+  .profile-label {
+    font-weight: bold;
+    color: #444;
+  }
+
+  .profile-value {
+    color: #333;
+  }
+
+  .edit-btn {
+    display: block;
+    margin: 25px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s;
+    font-size: 16px;
+  }
+
+  .edit-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .input-group {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .input-group input[type="password"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  .admin-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .admin-btn:hover {
+    background-color: #218838;
+  }
+
+  .message {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffeeba;
+    border-left: 5px solid #ffc107;
+    border-radius: 6px;
+    color: #856404;
+    font-size: 14px;
+  }
+</style>
+
+</head>
+<body>
+
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Головна</a>
+  <a href="{{ url_for('profile') }}">Профіль</a>
+  <a href="{{ url_for('cart') }}">Кошик</a>
+  <a href="{{ url_for('contacts') }}">Контакти</a>
+</div>
+
+<div class="profile-container">
+  <h1>Мій Профіль</h1>
+
+  <div class="profile-info">
+    <div class="profile-label">Ім'я:</div>
+    <div class="profile-value">{{ user['username'] }}</div>
+  </div>
+
+  <div class="profile-info">
+    <div class="profile-label">Email:</div>
+    <div class="profile-value">{{ user['email'] }}</div>
+  </div>
+
+  <div class="profile-info">
+    <div class="profile-label">Телефон:</div>
+    <div class="profile-value">{{ user['phone'] }}</div>
+  </div>
+
+  <div class="profile-info">
+    <div class="profile-label">Адреса доставки:</div>
+    <div class="profile-value">{{ user['address'] }}</div>
+  </div>
+
+  <a href="{{ url_for('edit_profile') }}" class="edit-btn">Редагувати профіль</a>
+
+  <form method="POST" action="{{ url_for('admin_login') }}" class="input-group">
+    <input type="password" name="admin_code" placeholder="Введіть код адміністратора" required>
+    <button type="submit" class="admin-btn">Увійти як адмін</button>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div id="adminMessage" class="message">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroMeow - Контакти</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #007bff;
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #ffeb3b;
+    }
+
+    .contact-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .contact-info {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+
+    .contact-info p {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Головна</a>
+  <a href="{{ url_for('profile') }}">Профіль</a>
+  <a href="{{ url_for('cart') }}">Кошик</a>
+  <a href="{{ url_for('contacts') }}">Контакти</a>
+</div>
+<div class="contact-container">
+  <h1>Зв’яжіться з нами</h1>
+  <p>Маєте питання або потребуєте допомоги? Напишіть або зателефонуйте нам — ми завжди раді допомогти!</p>
+  <div class="contact-info">
+    <p><strong>Телефон:</strong> +38(066) 347 48 28 </p>
+  </div>
+</div>
+
+</body>
+</html>

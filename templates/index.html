@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroMeow - Головна</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    .navbar {
+      background-color: #007bff;
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #ffeb3b;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-info h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+
+    .product-info p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .product-price {
+      font-weight: bold;
+      color: #007bff;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .add-to-cart {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .add-to-cart:hover {
+      background-color: #0056b3;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .quantity-selector label {
+      margin-right: 10px;
+    }
+
+    .quantity-selector input {
+      width: 60px;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Головна</a>
+  <a href="{{ url_for('profile') }}">Профіль</a>
+  <a href="{{ url_for('cart') }}">Кошик</a>
+  <a href="{{ url_for('contacts') }}">Контакти</a>
+</div>
+
+<div class="container">
+  <h1>Наші товари</h1>
+  
+  <div class="products-grid">
+    {% for product in products %}
+      <div class="product-card">
+        <img src="{{ product['image_url'] }}" alt="{{ product['name'] }}" class="product-image">
+        <div class="product-info">
+          <h3>{{ product['name'] }}</h3>
+          <p>{{ product['description'] }}</p>
+          <p class="product-price">{{ product['price'] }} грн</p>
+          
+          <form method="POST" action="{{ url_for('cart') }}">
+            <input type="hidden" name="product_id" value="{{ product['id'] }}">
+            <div class="quantity-selector">
+              <label for="quantity">Кількість:</label>
+              <input type="number" id="quantity" name="quantity" value="1" min="1">
+            </div>
+            <button type="submit" class="add-to-cart">Додати до кошика</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>

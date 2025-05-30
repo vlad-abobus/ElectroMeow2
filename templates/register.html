@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroMeow - Реєстрація</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+  }
+
+  .navbar {
+    background-color: #007bff;
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+  }
+
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+
+  .navbar a:hover {
+    color: #ffeb3b;
+  }
+
+  .registration-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .registration-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  .registration-item {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .registration-item label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  .registration-item input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  .registration-item button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .registration-item button:hover {
+    background-color: #0056b3;
+  }
+
+  .alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+</style>
+
+</head>
+<body>
+
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Головна</a>
+  <a href="{{ url_for('profile') }}">Профіль</a>
+  <a href="{{ url_for('cart') }}">Кошик</a>
+  <a href="{{ url_for('contacts') }}">Контакти</a>
+</div>
+
+<div class="registration-container">
+  <h2>Реєстрація</h2>
+  
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  
+  <form method="POST" action="{{ url_for('register') }}">
+    <div class="registration-item">
+      <label>Ім'я:</label>
+      <input type="text" name="name" required>
+    </div>
+
+    <div class="registration-item">
+      <label>Email:</label>
+      <input type="email" name="email" required>
+    </div>
+
+    <div class="registration-item">
+      <label>Телефон:</label>
+      <input type="tel" name="phone" required>
+    </div>
+
+    <div class="registration-item">
+      <label>Адреса доставки:</label>
+      <input type="text" name="address" required>
+    </div>
+
+    <div class="registration-item">
+      <label>Пароль:</label>
+      <input type="password" name="password" required>
+    </div>
+
+    <div class="registration-item">
+      <button type="submit">Зареєструватися</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

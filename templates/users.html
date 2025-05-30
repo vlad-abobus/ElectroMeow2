@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroMeow - Адмін-панель</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    .navbar {
+      background-color: #007bff;
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    .navbar a:hover {
+      color: #ffeb3b;
+    }
+
+    .admin-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .admin-actions {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+    }
+
+    .admin-actions a {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .admin-actions a:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .status-new {
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .status-completed {
+      color: #28a745;
+      font-weight: bold;
+    }
+
+    .section-title {
+      margin-top: 40px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #007bff;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="{{ url_for('index') }}">Головна</a>
+  <a href="{{ url_for('profile') }}">Профіль</a>
+  <a href="{{ url_for('cart') }}">Кошик</a>
+  <a href="{{ url_for('contacts') }}">Контакти</a>
+</div>
+
+<div class="admin-container">
+  <h1>Адмін-панель</h1>
+  
+  <div class="admin-actions">
+    <a href="{{ url_for('index') }}">На головну</a>
+    <a href="{{ url_for('admin') }}">Оновити</a>
+  </div>
+
+  <h2 class="section-title">Користувачі</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Ім'я</th>
+        <th>Email</th>
+        <th>Телефон</th>
+        <th>Адреса</th>
+        <th>Адмін</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user['id'] }}</td>
+          <td>{{ user['username'] }}</td>
+          <td>{{ user['email'] }}</td>
+          <td>{{ user['phone'] }}</td>
+          <td>{{ user['address'] }}</td>
+          <td>{% if user['is_admin'] %}Так{% else %}Ні{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2 class="section-title">Замовлення</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Користувач</th>
+        <th>Товар</th>
+        <th>Кількість</th>
+        <th>Сума</th>
+        <th>Статус</th>
+        <th>Дата</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+          <td>{{ order['id'] }}</td>
+          <td>{{ order['username'] }}</td>
+          <td>{{ order['product_name'] }}</td>
+          <td>{{ order['quantity'] }}</td>
+          <td>{{ order['total_price'] }} грн</td>
+          <td class="status-{{ order['status'] }}">
+            {% if order['status'] == 'new' %}Нове{% else %}Виконане{% endif %}
+          </td>
+          <td>{{ order['order_date'] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
+
