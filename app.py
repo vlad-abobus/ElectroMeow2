@@ -120,18 +120,45 @@ def register():
         
     return render_template('register.html')
 
+# Вхід в акаунт
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        
+        db = get_db()
+        user = db.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
+        db.close()
+        
+        if user and check_password_hash(user['password'], password):
+            session['user_email'] = user['email']
+            flash('Ви успішно увійшли в систему', 'success')
+            return redirect(url_for('profile'))
+        else:
+            flash('Невірний email або пароль', 'error')
+    
+    return render_template('login.html')
+
+# Вихід з акаунту
+@app.route('/logout')
+def logout():
+    session.pop('user_email', None)
+    flash('Ви вийшли з системи', 'success')
+    return redirect(url_for('index'))
+
 # Профіль
 @app.route('/profile')
 def profile():
     if 'user_email' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE email = ?', (session['user_email'],)).fetchone()
     db.close()
     
     if not user:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     return render_template('profile.html', user=user)
 
@@ -139,7 +166,7 @@ def profile():
 @app.route('/edit_profile', methods=['GET', 'POST'])
 def edit_profile():
     if 'user_email' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE email = ?', (session['user_email'],)).fetchone()
@@ -166,16 +193,15 @@ def edit_profile():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
     if 'user_email' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
 
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE email = ?', (session['user_email'],)).fetchone()
     
-    # 🔐 Захист: якщо користувача не знайдено — повернутись на реєстрацію
     if not user:
-        flash('Користувача не знайдено. Увійди або зареєструйся знову.', 'error')
+        flash('Користувача не знайдено. Увійдіть або зареєструйтесь знову.', 'error')
         db.close()
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     if request.method == 'POST':
         product_id = request.form.get('product_id')
@@ -212,7 +238,7 @@ def cart():
 @app.route('/remove_from_cart/<int:order_id>')
 def remove_from_cart(order_id):
     if 'user_email' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     db = get_db()
     db.execute('DELETE FROM orders WHERE id = ?', (order_id,))
@@ -226,7 +252,7 @@ def remove_from_cart(order_id):
 @app.route('/admin')
 def admin():
     if 'user_email' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE email = ?', (session['user_email'],)).fetchone()
@@ -252,7 +278,7 @@ def admin():
 @app.route('/admin_login', methods=['POST'])
 def admin_login():
     if 'user_email' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('login'))
     
     admin_code = request.form.get('admin_code')
     
