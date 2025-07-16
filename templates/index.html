@@ -130,6 +130,11 @@
   <a href="{{ url_for('profile') }}">Профіль</a>
   <a href="{{ url_for('cart') }}">Кошик</a>
   <a href="{{ url_for('contacts') }}">Контакти</a>
+  {% if 'user_email' in session %}
+    <a href="{{ url_for('logout') }}">Вийти</a>
+  {% else %}
+    <a href="{{ url_for('login') }}">Увійти</a>
+  {% endif %}
 </div>
 
 <div class="container">
