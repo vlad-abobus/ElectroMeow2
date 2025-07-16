@@ -97,6 +97,20 @@
     background-color: #f8d7da;
     color: #721c24;
   }
+
+  .login-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .login-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }
 </style>
 
 </head>
@@ -107,6 +121,11 @@
   <a href="{{ url_for('profile') }}">Профіль</a>
   <a href="{{ url_for('cart') }}">Кошик</a>
   <a href="{{ url_for('contacts') }}">Контакти</a>
+  {% if 'user_email' in session %}
+    <a href="{{ url_for('logout') }}">Вийти</a>
+  {% else %}
+    <a href="{{ url_for('login') }}">Увійти</a>
+  {% endif %}
 </div>
 
 <div class="registration-container">
@@ -150,6 +169,10 @@
       <button type="submit">Зареєструватися</button>
     </div>
   </form>
+
+  <div class="login-link">
+    Вже зареєстровані? <a href="{{ url_for('login') }}">Увійти в акаунт</a>
+  </div>
 </div>
 
 </body>
